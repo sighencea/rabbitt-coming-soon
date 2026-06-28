@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rabbitt — Coming Soon</title>
+  <meta name="description" content="Rabbitt — heavyweight hoodies, built to last and cut for character. The first drop is almost here. Join the waitlist.">
+
+  <!-- Social / Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Rabbitt — Coming Soon">
+  <meta property="og:description" content="Heavyweight hoodies, built to last and cut for character. The first drop is almost here — be first through the door.">
+  <meta property="og:image" content="assets/rabbitt-logo-slogan.png">
+  <meta name="theme-color" content="#f1ede5">
+
+  <link rel="icon" href="assets/rabbitt-logomark.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page">
+
+    <!-- oversized watermark logomark -->
+    <img class="watermark" src="assets/rabbitt-logomark.png" alt="" aria-hidden="true">
+
+    <!-- top bar -->
+    <header class="header">
+      <img class="header__mark" src="assets/rabbitt-logomark.png" alt="Rabbitt">
+      <span class="header__tagline">EST. 2026 · Cut for character</span>
+    </header>
+
+    <!-- center content -->
+    <main class="main">
+      <div class="pill">
+        <span class="pill__dot"></span>
+        Dropping Soon
+      </div>
+
+      <img class="hero" src="assets/rabbitt-logo-slogan.png" alt="Rabbitt — Cut for character">
+
+      <p class="lede">
+        Heavyweight hoodies, built to last and cut for character. The first drop is almost here — be first through the door.
+      </p>
+
+      <!-- email form (default state) -->
+      <form class="form" id="waitlist-form" novalidate>
+        <div class="form__row">
+          <input
+            class="form__input"
+            id="email"
+            type="email"
+            name="email"
+            required
+            autocomplete="email"
+            placeholder="you@email.com"
+            aria-label="Email address">
+          <button class="form__button" type="submit">Notify me</button>
+        </div>
+        <span class="form__error" id="form-error" role="alert" hidden></span>
+        <span class="form__note">No spam. One email when we go live.</span>
+      </form>
+
+      <!-- confirmation (success state — replaces the form) -->
+      <div class="confirm" id="confirmation" hidden>
+        <span class="confirm__check">✓</span>
+        You're on the list. Watch your inbox.
+      </div>
+    </main>
+
+    <!-- footer -->
+    <footer class="footer">
+      <span>© 2026 Rabbitt</span>
+      <span class="footer__links">
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer">TikTok</a>
+      </span>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
