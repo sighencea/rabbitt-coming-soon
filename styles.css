@@ -15,7 +15,15 @@
 
 * { box-sizing: border-box; }
 
-html, body { margin: 0; padding: 0; }
+/* hidden attribute must win over display rules below */
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* no horizontal scroll, ever */
+}
 
 ::selection { background: var(--ink); color: var(--bone); }
 
@@ -30,6 +38,7 @@ html, body { margin: 0; padding: 0; }
 .page {
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh; /* avoids mobile browser-chrome clipping */
   width: 100%;
   background: var(--bone);
   color: var(--ink);
@@ -256,12 +265,81 @@ html, body { margin: 0; padding: 0; }
 /* ============================================================
    Responsive
    ============================================================ */
+
+/* Tablet / small laptop */
+@media (max-width: 768px) {
+  /* Lock to a single screen: page never exceeds the viewport,
+     so the document cannot scroll vertically on mobile. */
+  html, body { height: 100%; overflow: hidden; }
+  .page { height: 100dvh; }
+  .main { min-height: 0; } /* allow the flex middle to shrink, not push */
+
+  .header { padding: 24px 28px; }
+  .footer { padding: 22px 28px; }
+  .main { padding: 32px 22px 48px; }
+
+  .header__tagline { font-size: 11px; letter-spacing: 0.14em; }
+
+  .pill { margin-bottom: 36px; }
+  .hero { margin-bottom: 32px; }
+  .lede { font-size: 17px; margin-bottom: 32px; }
+}
+
+/* Phones */
 @media (max-width: 480px) {
-  .header { padding: 22px 24px; }
-  .footer { padding: 20px 24px; }
+  .header { padding: 20px 20px; }
+  .footer {
+    padding: 18px 20px;
+    gap: 10px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+  .main { padding: 24px 20px 40px; }
 
   /* hide header tagline on narrow mobile */
   .header__tagline { display: none; }
+
+  .pill {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    padding: 7px 14px;
+    margin-bottom: 28px;
+  }
+
+  .lede { font-size: 16px; line-height: 1.55; }
+
+  /* keep the input usable: trim button padding, stop iOS zoom on focus */
+  .form__input { font-size: 16px; padding: 11px 12px; }
+  .form__button { padding: 0 20px; font-size: 14px; }
+
+  .confirm {
+    padding: 16px 20px;
+    font-size: 15px;
+    width: min(100%, 90vw);
+    justify-content: center;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 360px) {
+  .footer__links { gap: 16px; }
+  .form__button { padding: 0 16px; }
+}
+
+/* Short / landscape screens — compact everything so it still fits
+   one screen with no scroll and no clipping. Hero scales to height. */
+@media (max-height: 560px) {
+  .header { padding-top: 12px; padding-bottom: 12px; }
+  .footer { padding-top: 10px; padding-bottom: 10px; }
+  .main { padding: 10px 20px 12px; }
+
+  .pill { margin-bottom: 10px; padding: 5px 12px; }
+  .hero { width: min(300px, 44vh); margin-bottom: 10px; }
+  .lede { font-size: 13px; line-height: 1.4; margin-bottom: 10px; }
+  .form { gap: 8px; }
+  .form__note { display: none; }
+
+  .watermark { height: 150vh; }
 }
 
 /* Respect reduced-motion preference */
