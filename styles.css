@@ -50,11 +50,13 @@ html, body {
 
 .watermark {
   position: absolute;
-  right: -7vw;
+  left: 50%;
   bottom: -8vh;
+  transform: translateX(-50%); /* centered: ears frame the wordmark */
   height: 115vh;
   width: auto;
   opacity: 0.05;
+  filter: invert(1); /* white source PNG -> dark mark on the bone bg */
   pointer-events: none;
   user-select: none;
 }
