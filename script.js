@@ -23,22 +23,28 @@
     row.classList.remove('is-invalid');
   }
 
-  // Front-end only: swap the form for the confirmation block.
-  // In production, POST the email to your mailing-list provider
-  // (Mailchimp, Klaviyo, ConvertKit, Resend, ...) and only show
-  // the confirmation on a successful response.
-  function submitEmail(email) {
+  // Submit to Formspree via AJAX so we can swap in the confirmation
+  // in place instead of redirecting away. Resolves on success; rejects
+  // with a user-facing message on failure.
+  function submitEmail() {
     button.disabled = true;
     button.textContent = 'Joining…';
 
-    // Simulated async request. Replace with a real fetch():
-    //   return fetch('/api/subscribe', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ email: email })
-    //   }).then(function (res) { if (!res.ok) throw new Error(); });
-    return new Promise(function (resolve) {
-      setTimeout(resolve, 600);
+    return fetch(form.action, {
+      method: (form.method || 'POST').toUpperCase(),
+      body: new FormData(form),
+      headers: { Accept: 'application/json' }
+    }).then(function (res) {
+      if (res.ok) return;
+      // Surface Formspree's validation message when available.
+      return res.json().then(function (data) {
+        var msg = data && data.errors && data.errors.length
+          ? data.errors.map(function (er) { return er.message; }).join(', ')
+          : 'Something went wrong. Please try again.';
+        throw new Error(msg);
+      }, function () {
+        throw new Error('Something went wrong. Please try again.');
+      });
     });
   }
 
@@ -62,15 +68,15 @@
 
     clearError();
 
-    submitEmail(email)
+    submitEmail()
       .then(function () {
         form.hidden = true;
         confirmation.hidden = false;
       })
-      .catch(function () {
+      .catch(function (err) {
         button.disabled = false;
         button.textContent = 'Notify me';
-        showError('Something went wrong. Please try again.');
+        showError((err && err.message) || 'Something went wrong. Please try again.');
       });
   });
 })();
