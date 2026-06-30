@@ -23,6 +23,12 @@
     row.classList.remove('is-invalid');
   }
 
+  function resetTurnstile() {
+    if (window.turnstile && typeof window.turnstile.reset === 'function') {
+      try { window.turnstile.reset(); } catch (e) { /* widget not rendered yet */ }
+    }
+  }
+
   // Submit to Formspree via AJAX so we can swap in the confirmation
   // in place instead of redirecting away. Resolves on success; rejects
   // with a user-facing message on failure.
@@ -66,6 +72,15 @@
       return;
     }
 
+    // Cloudflare Turnstile injects this hidden field once it has a token.
+    // If it's missing/empty, the challenge isn't ready or needs interaction.
+    var token = form.querySelector('[name="cf-turnstile-response"]');
+    if (!token || !token.value) {
+      showError('Please complete the verification, then try again.');
+      resetTurnstile();
+      return;
+    }
+
     clearError();
 
     submitEmail()
@@ -77,6 +92,7 @@
         button.disabled = false;
         button.textContent = 'Notify me';
         showError((err && err.message) || 'Something went wrong. Please try again.');
+        resetTurnstile(); // token is single-use; get a fresh one for retry
       });
   });
 })();
