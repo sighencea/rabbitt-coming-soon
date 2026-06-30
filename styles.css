@@ -275,6 +275,12 @@ html, body {
 
 .footer a:hover { color: var(--ink); }
 
+/* underline the Sighencea credit link so it reads as clickable */
+.footer__credit a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* ============================================================
    Responsive
    ============================================================ */
