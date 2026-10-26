@@ -37,7 +37,11 @@
 
     <!-- intro film: plays full-screen once, then keeps looping behind the content -->
     <div class="intro">
-      <video class="intro__video" id="intro-video" src="assets/video/intro.mp4" autoplay muted playsinline loop preload="auto" aria-hidden="true"></video>
+      <video class="intro__video" id="intro-video" autoplay muted playsinline loop preload="auto" aria-hidden="true">
+        <!-- landscape first: browsers that ignore `media` fall back to it everywhere -->
+        <source src="assets/video/intro.mp4" type="video/mp4" media="(orientation: landscape)">
+        <source src="assets/video/intro-portrait.mp4" type="video/mp4" media="(orientation: portrait)">
+      </video>
       <button class="intro__skip" id="intro-skip" type="button">Skip intro</button>
     </div>
 

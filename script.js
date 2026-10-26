@@ -47,7 +47,10 @@
   });
 
   // Anything that stops the film playing through reveals the page instead.
+  // When every <source> fails the error lands on the last one, not the element.
   video.addEventListener('error', goLive);
+  var lastSource = video.querySelector('source:last-of-type');
+  if (lastSource) lastSource.addEventListener('error', goLive);
   skip.addEventListener('click', goLive);
 
   if (!live) {
