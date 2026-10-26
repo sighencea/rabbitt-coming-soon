@@ -1,3 +1,62 @@
+/* Intro film: play once full-screen, then loop silently behind the content.
+   The footage ends on a baked-in title card that would clash with the page's
+   own logo, so the background loop restarts just before it. */
+(function () {
+  'use strict';
+
+  var root = document.documentElement;
+  var video = document.getElementById('intro-video');
+  var skip = document.getElementById('intro-skip');
+  if (!video) return;
+
+  var LOOP_END = 4.6;        // seconds; the title card cuts in at ~4.9s
+  var INTRO_TIMEOUT = 12000; // never hold the page hostage to a slow network
+  var live = !root.classList.contains('is-intro');
+  var guard;
+
+  video.muted = true; // autoplay is only permitted without sound
+  video.loop = false; // the `loop` attribute is just the no-JS fallback
+
+  function play() {
+    var attempt = video.play();
+    if (attempt && typeof attempt.catch === 'function') attempt.catch(goLive);
+  }
+
+  function goLive() {
+    if (live) return;
+    live = true;
+    clearTimeout(guard);
+    root.classList.remove('is-intro');
+    try { sessionStorage.setItem('rabbitt-intro-seen', '1'); } catch (e) { /* storage blocked */ }
+  }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // Still first frame instead of a moving background.
+    video.autoplay = false;
+    video.pause();
+    return;
+  }
+
+  video.addEventListener('timeupdate', function () {
+    if (live && video.currentTime >= LOOP_END) video.currentTime = 0;
+  });
+
+  video.addEventListener('ended', function () {
+    goLive();
+    video.currentTime = 0;
+    play();
+  });
+
+  // Anything that stops the film playing through reveals the page instead.
+  video.addEventListener('error', goLive);
+  skip.addEventListener('click', goLive);
+
+  if (!live) {
+    guard = setTimeout(goLive, INTRO_TIMEOUT);
+    play();
+  }
+})();
+
 (function () {
   'use strict';
 

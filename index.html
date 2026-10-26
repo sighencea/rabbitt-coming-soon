@@ -21,11 +21,30 @@
 
   <link rel="stylesheet" href="styles.css">
 
+  <!-- Flag the intro before first paint so the content can't flash in ahead of
+       the film. Skipped for repeat views in the same tab session and for
+       visitors who prefer reduced motion. -->
+  <script>
+    (function () {
+      var seen = false;
+      try { seen = !!sessionStorage.getItem('rabbitt-intro-seen'); } catch (e) {}
+      if (!seen && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.className += ' is-intro';
+      }
+    })();
+  </script>
+
   <!-- Cloudflare Turnstile (spam protection for the Formspree form) -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
   <div class="page">
+
+    <!-- intro film: plays full-screen once, then keeps looping behind the content -->
+    <div class="intro">
+      <video class="intro__video" id="intro-video" src="assets/video/intro.mp4" autoplay muted playsinline loop preload="auto" aria-hidden="true"></video>
+      <button class="intro__skip" id="intro-skip" type="button">Skip intro</button>
+    </div>
 
     <!-- oversized watermark wordmark -->
     <img class="watermark" src="assets/rabbitt-wordmark.png" alt="" aria-hidden="true">
