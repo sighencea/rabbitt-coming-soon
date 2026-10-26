@@ -48,26 +48,13 @@ html, body {
   flex-direction: column;
 }
 
-.watermark {
-  position: absolute;
-  left: 50%;
-  bottom: -8vh;
-  transform: translateX(-50%); /* centered: ears frame the wordmark */
-  height: 115vh;
-  width: auto;
-  opacity: 0.05;
-  filter: invert(1); /* white source PNG -> dark mark on the bone bg */
-  pointer-events: none;
-  user-select: none;
-}
-
 /* ============================================================
    Intro film / background video
    ============================================================ */
 .intro {
   position: absolute;
   inset: 0;
-  z-index: 0; /* behind the watermark and content once the page is live */
+  z-index: 0; /* behind the content once the page is live */
   background: var(--bone);
   overflow: hidden;
 }
@@ -425,8 +412,6 @@ html, body {
   .lede { font-size: 13px; line-height: 1.4; margin-bottom: 10px; }
   .form { gap: 8px; }
   .form__note { display: none; }
-
-  .watermark { height: 150vh; }
 }
 
 /* Respect reduced-motion preference */

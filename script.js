@@ -27,7 +27,6 @@
     live = true;
     clearTimeout(guard);
     root.classList.remove('is-intro');
-    try { sessionStorage.setItem('rabbitt-intro-seen', '1'); } catch (e) { /* storage blocked */ }
   }
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
